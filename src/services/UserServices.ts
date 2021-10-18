@@ -1,7 +1,10 @@
-import { UserProps } from "../objectType";
+import { UserCredentials, UserProps } from "../objectType";
 import api from "./api";
 
 export const UserServices = {
+  login: async (credentials: UserCredentials) => {
+    return await api.post("/jwt-auth/v1/token", JSON.stringify(credentials));
+  },
   addUser: async (data: UserProps) => {
     return await api.post("/api/user/", JSON.stringify(data));
   },

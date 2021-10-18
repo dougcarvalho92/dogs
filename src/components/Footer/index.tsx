@@ -1,9 +1,13 @@
-import React from "react";
+import { ReactComponent as Dogs } from "../../assets/images/dogs-footer.svg";
 
-// import { Container } from './styles';
-
+import "./style.css";
 const Footer = () => {
-  return <div />;
+  return (
+    <footer className="footer">
+      <Dogs />
+      <p>Dogs. Alguns direitos reservados.</p>
+    </footer>
+  );
 };
 
 export default Footer;

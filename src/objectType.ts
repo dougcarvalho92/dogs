@@ -1,5 +1,3 @@
-import { AxiosResponse } from "axios";
-
 export interface UserProps {
   username: string;
   password: string;
@@ -10,4 +8,8 @@ export interface TokenProps {
   user_email: string;
   user_nicename: string;
   user_display_name: string;
+}
+export interface UserCredentials {
+  username: string;
+  userpassword: string;
 }
