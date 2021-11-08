@@ -1,9 +1,9 @@
-import { TokenProps, UserProps } from "../objectType";
+import { TokenProps, UserCredentials } from "../objectType";
 import api from "./api";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export const TokenServices = {
-  getToken: async (data: UserProps) => {
+  getToken: async (data: UserCredentials) => {
     return await api.post<TokenProps>(
       "/jwt-auth/v1/token",
       JSON.stringify(data)

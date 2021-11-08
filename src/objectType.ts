@@ -1,7 +1,6 @@
-export interface UserProps {
+export interface UserCredentials {
   username: string;
   password: string;
-  email?: string;
 }
 export interface TokenProps {
   token: string;
@@ -9,7 +8,9 @@ export interface TokenProps {
   user_nicename: string;
   user_display_name: string;
 }
-export interface UserCredentials {
+export interface UserProps {
   username: string;
-  userpassword: string;
+  id: number;
+  nome: string;
+  email: string;
 }

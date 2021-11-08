@@ -8,21 +8,24 @@ import Recovery from "./components/Recovery";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Reset from "./components/Reset";
+import { UserProvider } from "./context/UserContext";
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<Auth />}>
-          <Route path="" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="recovery" element={<Recovery />} />
-          <Route path="reset" element={<Reset />} />
-        </Route>
-      </Routes>
-      <Footer />
+      <UserProvider>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<Auth />}>
+            <Route path="" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="recovery" element={<Recovery />} />
+            <Route path="reset" element={<Reset />} />
+          </Route>
+        </Routes>
+        <Footer />
+      </UserProvider>
     </BrowserRouter>
   );
 };

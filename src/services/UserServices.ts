@@ -5,11 +5,11 @@ export const UserServices = {
   login: async (credentials: UserCredentials) => {
     return await api.post("/jwt-auth/v1/token", JSON.stringify(credentials));
   },
-  addUser: async (data: UserProps) => {
+  addUser: async (data: UserCredentials) => {
     return await api.post("/api/user/", JSON.stringify(data));
   },
   getUser: async () => {
-    return await api.get("/api/user");
+    return await api.get<UserProps>("/api/user");
   },
   lostPassword: async (id: number) => {
     return await api.post(`/api/password/lost`, {
