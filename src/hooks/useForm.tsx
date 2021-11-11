@@ -8,6 +8,11 @@ interface TypesProps {
 
 const types = new Array<TypesProps>(
   {
+    type: "username",
+    regex: /^(?=[a-zA-Z0-9._]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/,
+    message: "Usuário deve ter no minimo 4 e no maximo 20 caracteres",
+  },
+  {
     type: "email",
     regex:
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,

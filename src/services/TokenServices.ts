@@ -1,4 +1,4 @@
-import { TokenProps, UserCredentials } from "../objectType";
+import { UserCredentials } from "../objectType";
 import api from "./api";
 
 // eslint-disable-next-line import/no-anonymous-default-export

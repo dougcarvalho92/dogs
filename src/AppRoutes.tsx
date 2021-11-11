@@ -1,24 +1,48 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Home from "./pages/Home";
-import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
 
-import { UserProvider } from "./context/UserContext";
+import Dashboard from "./pages/Dashboard";
+import Auth from "./pages/Auth";
+import { Navigate, useRoutes } from "react-router-dom";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import { useUser } from "./context/UserContext";
+
+const PageNotFound = () => {
+  return <h1>Não encontrada</h1>;
+};
 
 const AppRoutes = () => {
-  return (
-    <BrowserRouter>
-      <UserProvider>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth/*" element={<Auth />} />
-        </Routes>
-        <Footer />
-      </UserProvider>
-    </BrowserRouter>
-  );
+  const { signed } = useUser();
+
+  let routes = useRoutes([
+    {
+      path: "/",
+      element: <Dashboard />,
+    },
+    {
+      path: "profile",
+      element: signed ? <Profile /> : <Navigate to="/auth" />,
+    },
+    {
+      path: "auth",
+      element: signed ? <Navigate to="/profile" /> : <Auth />,
+      children: [
+        {
+          path: "",
+          element: signed ? <Navigate to="/profile" /> : <Login />,
+        },
+        {
+          path: "register",
+          element: signed ? <Navigate to="/profile" /> : <Register />,
+        },
+      ],
+    },
+    {
+      path: "*",
+      element: <PageNotFound />,
+    },
+  ]);
+  return routes;
 };
 
 export default AppRoutes;

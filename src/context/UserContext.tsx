@@ -64,7 +64,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
           localStorage.setItem("token", data.token);
           getUser();
           setSigned(true);
-          navigate("/conta");
+          navigate("/profile");
         }
       })
       .catch((err: AxiosError) => {
@@ -117,6 +117,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       }
     }
     autoLogin();
+    // eslint-disable-next-line
   }, [userLogout]);
 
   return (

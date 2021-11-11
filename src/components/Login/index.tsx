@@ -10,7 +10,7 @@ import Input from "../Input";
 
 import "./style.css";
 
-const LoginForm = () => {
+const Login = () => {
   const username = useForm(false);
   const password = useForm(false);
   const { userLogin, loading, error } = useUser();
@@ -52,4 +52,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default Login;

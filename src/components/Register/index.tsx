@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import React, { FormEvent, useContext } from "react";
+import { FormEvent } from "react";
 import { useUser } from "../../context/UserContext";
 import useForm from "../../hooks/useForm";
 import { ErrorResponse } from "../../objectType";
@@ -8,7 +8,7 @@ import Button from "../Button";
 import Input from "../Input";
 
 const Register = () => {
-  const username = useForm(false);
+  const username = useForm("username");
   const email = useForm("email");
   const password = useForm("password");
   const { userLogin } = useUser();
