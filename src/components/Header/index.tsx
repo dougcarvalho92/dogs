@@ -13,10 +13,15 @@ const Header = () => {
         <NavLink to="/" aria-label="Dogs - Home">
           <DogsSvg />
         </NavLink>
-        {user && user.nome}
-        <NavLink to="/auth" className="login">
-          Login / Criar
-        </NavLink>
+        {user ? (
+          <NavLink to="/conta" className="login">
+            {user.nome}
+          </NavLink>
+        ) : (
+          <NavLink to="/auth" className="login">
+            Login / Criar
+          </NavLink>
+        )}
       </nav>
     </header>
   );

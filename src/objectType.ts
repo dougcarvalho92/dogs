@@ -1,3 +1,5 @@
+import { AxiosResponse } from "axios";
+
 export interface UserCredentials {
   username: string;
   password: string;
@@ -13,4 +15,14 @@ export interface UserProps {
   id: number;
   nome: string;
   email: string;
+}
+export interface ErrorResponse {
+  code: string;
+  data: {
+    status: number;
+  };
+  message: string;
+}
+export interface AxiosErrorResponse extends AxiosResponse {
+  data: ErrorResponse;
 }

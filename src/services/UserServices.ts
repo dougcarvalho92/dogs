@@ -1,4 +1,4 @@
-import { UserCredentials, UserProps } from "../objectType";
+import { ErrorResponse, UserCredentials, UserProps } from "../objectType";
 import api from "./api";
 
 export const UserServices = {
@@ -9,7 +9,7 @@ export const UserServices = {
     return await api.post("/api/user/", JSON.stringify(data));
   },
   getUser: async () => {
-    return await api.get<UserProps>("/api/user");
+    return await api.get<UserProps | ErrorResponse>("/api/user");
   },
   lostPassword: async (id: number) => {
     return await api.post(`/api/password/lost`, {
