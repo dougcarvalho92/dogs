@@ -4,6 +4,7 @@ import Recovery from "../../components/Recovery";
 import Register from "../../components/Register";
 import Reset from "../../components/Reset";
 import { useUser } from "../../context/UserContext";
+import "./style.css";
 
 const Auth = () => {
   const { signed } = useUser();

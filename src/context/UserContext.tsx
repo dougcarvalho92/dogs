@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import React, {
   createContext,
   ReactNode,
@@ -7,7 +8,12 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { AxiosErrorResponse, UserCredentials, UserProps } from "../objectType";
+import {
+  ErrorResponse,
+  TokenProps,
+  UserCredentials,
+  UserProps,
+} from "../objectType";
 import api from "../services/api";
 import { TokenServices } from "../services/TokenServices";
 import { UserServices } from "../services/UserServices";
@@ -45,34 +51,35 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     },
     [navigate]
   );
-  async function userLogin({ username, password }: UserCredentials) {
+  function userLogin({ username, password }: UserCredentials) {
     setLoading(true);
-    try {
-      const response = await TokenServices.getToken({
-        username,
-        password,
+    TokenServices.getToken({
+      username,
+      password,
+    })
+      .then((result) => {
+        const data = result.data as TokenProps;
+        if (data.token) {
+          api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+          localStorage.setItem("token", data.token);
+          getUser();
+          setSigned(true);
+          navigate("/conta");
+        }
+      })
+      .catch((err: AxiosError) => {
+        const error = err.response?.data as ErrorResponse;
+        const message = error.message
+          ? error.message
+          : "Tente novamente mais tarde";
+        console.log(message);
+        setSigned(false);
+        setUser(null);
+        setError(message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-      if (response.status !== 200) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-      const token = response.data.token;
-      if (token) {
-        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        localStorage.setItem("token", token);
-        await getUser();
-        setSigned(true);
-        navigate("/conta");
-      }
-    } catch (error) {
-      setSigned(false);
-      setUser(null);
-      if (isErrorResponse(error)) {
-        const err = error as AxiosErrorResponse;
-        setError(err.data.message);
-      }
-    } finally {
-      setLoading(false);
-    }
   }
 
   async function getUser() {
@@ -88,9 +95,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   function isUserProps(object: any): object is UserProps {
     return "nome" in object;
-  }
-  function isErrorResponse(object: any): object is AxiosErrorResponse {
-    return "data.message" in object;
   }
 
   useEffect(() => {

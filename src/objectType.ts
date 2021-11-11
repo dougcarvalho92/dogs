@@ -23,6 +23,7 @@ export interface ErrorResponse {
   };
   message: string;
 }
-export interface AxiosErrorResponse extends AxiosResponse {
-  data: ErrorResponse;
+
+export interface ErrorMessage {
+  message: string;
 }

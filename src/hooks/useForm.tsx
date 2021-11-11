@@ -22,7 +22,6 @@ const types = new Array<TypesProps>(
 );
 
 const useForm = (type: string | false) => {
-  console.log(types);
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
   function validate(value: string) {
