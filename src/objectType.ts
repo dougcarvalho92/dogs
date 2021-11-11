@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 
 export interface UserCredentials {
   username: string;
+  email?: string;
   password: string;
 }
 export interface TokenProps {

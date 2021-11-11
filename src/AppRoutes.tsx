@@ -13,7 +13,7 @@ const AppRoutes = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/auth" element={<Auth />} />
+          <Route path="/auth/*" element={<Auth />} />
         </Routes>
         <Footer />
       </UserProvider>

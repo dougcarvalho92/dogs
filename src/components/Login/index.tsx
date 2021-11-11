@@ -44,7 +44,7 @@ const LoginForm = () => {
       <div className="register">
         <h2 className="subtitle">Cadastre-se</h2>
         <p>Ainda não possui conta? Cadastre-se no site</p>
-        <Link to="/auth/cadastro">
+        <Link to="/auth/register">
           <Button>Cadastro</Button>
         </Link>
       </div>
