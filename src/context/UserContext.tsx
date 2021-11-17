@@ -57,14 +57,13 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       username,
       password,
     })
-      .then((result) => {
+      .then(async (result) => {
         const data = result.data as TokenProps;
         if (data.token) {
           api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
           localStorage.setItem("token", data.token);
-          getUser();
-          setSigned(true);
-          navigate("/profile");
+          await getUser();
+          navigate("/user");
         }
       })
       .catch((err: AxiosError) => {
@@ -85,9 +84,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   async function getUser() {
     const userResponse = await UserServices.getUser();
     if (userResponse.status === 200) {
-      setSigned(true);
       const userData = userResponse.data;
       if (isUserProps(userData)) {
+        setSigned(true);
         setUser(userData);
       }
     }
@@ -99,26 +98,20 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   useEffect(() => {
     async function autoLogin() {
+      setLoading(true);
       const token = window.localStorage.getItem("token");
-      if (token) {
-        try {
-          setError(null);
-          setLoading(true);
-          api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-          const validate = await TokenServices.validateToken();
-          if (validate.status !== 200) throw new Error(validate.statusText);
-          await getUser();
-          setSigned(true);
-        } catch (error) {
-          userLogout();
-        } finally {
-          setLoading(false);
-        }
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const validate = await TokenServices.validateToken();
+      if (token && validate.status === 200) {
+        setError(null);
+        await getUser();
+      } else {
+        setError("Acesso Invalido");
       }
+      setLoading(false);
     }
     autoLogin();
-    // eslint-disable-next-line
-  }, [userLogout]);
+  }, []);
 
   return (
     <UserContext.Provider

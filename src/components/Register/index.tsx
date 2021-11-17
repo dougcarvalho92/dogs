@@ -11,6 +11,7 @@ const Register = () => {
   const username = useForm("username");
   const email = useForm("email");
   const password = useForm("password");
+  const confirm_password = useForm("password");
   const { userLogin } = useUser();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -38,8 +39,21 @@ const Register = () => {
       <form onSubmit={handleSubmit}>
         <Input label="Usuário" name="username" {...username} />
         <Input label="E-mail" name="usuario" {...email} />
-        <Input label="Password" name="usuario" {...password} type="password" />
-        <Button>Cadastre-se</Button>
+        <Input label="Senha" name="password" {...password} type="password" />
+        <Input
+          label="Confirme a senha"
+          name="confirm-password"
+          {...confirm_password}
+          type="password"
+        />
+
+        <Button
+          disabled={
+            username && email && password && confirm_password ? true : false
+          }
+        >
+          Cadastre-se
+        </Button>
       </form>
     </section>
   );

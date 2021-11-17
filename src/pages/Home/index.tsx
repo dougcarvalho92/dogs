@@ -22,7 +22,7 @@ const Home = () => {
       }
     }
     getToken();
-  });
+  }, [navigate]);
   return <Head title="Home" />;
 };
 

@@ -5,14 +5,14 @@ interface HeadProps {
   description?: string;
 }
 
-const Head = (props: HeadProps) => {
+const Head = ({ title, description }: HeadProps) => {
   useEffect(() => {
-    document.title = props.title + " | Dogs";
+    document.title = title + " | Dogs";
     const metaDescription = document.querySelector("meta[name='description']");
-    if (props.description && metaDescription) {
-      metaDescription.setAttribute("content", props.description || "");
+    if (description && metaDescription) {
+      metaDescription.setAttribute("content", description || "");
     }
-  }, [props]);
+  }, [title, description]);
 
   return <></>;
 };

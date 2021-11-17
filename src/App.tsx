@@ -4,7 +4,7 @@ import AppRoutes from "./AppRoutes";
 import "./assets/css/global.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import { UserProvider, useUser } from "./context/UserContext";
+import { UserProvider } from "./context/UserContext";
 
 function App() {
   return (

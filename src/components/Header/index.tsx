@@ -14,7 +14,7 @@ const Header = () => {
           <DogsSvg />
         </NavLink>
         {user ? (
-          <NavLink to="/profile" className="login-link">
+          <NavLink to="/user" className="login-link">
             {user.nome}
           </NavLink>
         ) : (

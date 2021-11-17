@@ -23,12 +23,18 @@ const types = new Array<TypesProps>(
     regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
     message:
       "A senha precisa ter 1 caracter maiusculo, 1 minúsculo e 1 digito. Com no mínimo 8 caracteres.",
+  },
+  {
+    type: "confirmpassword",
+    regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
+    message: "As senhas devem ser iguais",
   }
 );
 
 const useForm = (type: string | false) => {
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
+
   function validate(value: string) {
     const tp = types.find((tp) => tp.type === type);
     if (type === false) return true;
@@ -42,6 +48,7 @@ const useForm = (type: string | false) => {
       return true;
     }
   }
+
   function onChange({ target }: ChangeEvent<HTMLInputElement>) {
     if (error) {
       validate(target.value);
