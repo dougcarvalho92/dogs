@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { PhotoSelectedProps } from "../../objectType";
+import { PostImageData } from "../../objectType";
 import PhotoComments from "../PhotoComments";
 import styles from "./PhotoContent.module.css";
 
-const PhotoContent = ({ photo, comments }: PhotoSelectedProps) => {
+const PhotoContent = (photo: PostImageData) => {
   return (
     <div className={styles.photo}>
       <div className={styles.img}>
@@ -27,7 +27,7 @@ const PhotoContent = ({ photo, comments }: PhotoSelectedProps) => {
           </ul>
         </div>
       </div>
-      <PhotoComments id={photo.id} comments={comments} />
+      <PhotoComments />
     </div>
   );
 };

@@ -13,7 +13,7 @@ export interface TokenProps {
 }
 export interface UserProps {
   username: string;
-  id: number;
+  id: string;
   nome: string;
   email: string;
 }
@@ -43,7 +43,7 @@ export interface PostImageData {
   acessos: string;
   author: string;
   date: string;
-  id: number;
+  id: string;
   idade: number;
   peso: number;
   src: string;
@@ -51,7 +51,25 @@ export interface PostImageData {
   total_comments: string;
 }
 
+export interface CommentProps {
+  comment_ID: string;
+  comment_agent: string;
+  comment_approved: string;
+  comment_author: string;
+  comment_author_IP: string;
+  comment_author_email: string;
+  comment_author_url: string;
+  comment_content: string;
+  comment_date: string;
+  comment_date_gmt: string;
+  comment_karma: string;
+  comment_parent: string;
+  comment_post_ID: string;
+  comment_type: string;
+  user_id: string;
+}
+
 export interface PhotoSelectedProps {
-  comments: [];
+  comments: CommentProps[];
   photo: PostImageData;
 }

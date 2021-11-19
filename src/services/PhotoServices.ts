@@ -13,7 +13,7 @@ const PhotoServices = {
       `api/photo?_page=${_page}&_total=${_total}&_user=${_user}`
     );
   },
-  getPhotoById: async (id: number) => {
+  getPhotoById: async (id: string) => {
     return await api.get<PhotoSelectedProps>(`/api/photo/${id}`);
   },
   deletePhoto: async (id: number) => {

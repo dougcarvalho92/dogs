@@ -7,15 +7,18 @@ import React, {
   useState,
 } from "react";
 
-import { PhotoSelectedProps, PostImageData } from "../objectType";
+import { CommentProps, PostImageData } from "../objectType";
+import { CommentServices } from "../services/CommentServices";
 import PhotoServices from "../services/PhotoServices";
 
 interface PhotoContextData {
   photos: PostImageData[] | null;
-  photoSelected: PhotoSelectedProps | null;
+  photoSelected: PostImageData | null;
+  comments: CommentProps[] | null;
   error: string;
   loading: boolean;
-  handleChangeModalPhoto: (photo: PostImageData) => void;
+  handleChangeModalPhoto: (photo: PostImageData | null) => void;
+  PostComments: (comment: string, id: string) => void;
 }
 
 const PhotoContext = createContext<PhotoContextData>({} as PhotoContextData);
@@ -26,9 +29,11 @@ interface PhotoProviderProps {
 
 export const PhotoProvider = ({ children }: PhotoProviderProps) => {
   const [photos, setPhotos] = useState<PostImageData[] | null>(null);
-  const [photoSelected, setPhotoSelected] = useState<PhotoSelectedProps | null>(
+  const [photoSelected, setPhotoSelected] = useState<PostImageData | null>(
     null
   );
+  const [comments, setComments] = useState<CommentProps[] | null>(null);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -54,14 +59,33 @@ export const PhotoProvider = ({ children }: PhotoProviderProps) => {
     getPhotos();
   }, []);
 
-  async function handleChangeModalPhoto(photo: PostImageData) {
-    await PhotoServices.getPhotoById(photo.id).then((result) => {
-      if (result.data) {
-        const data = result.data;
-        setPhotoSelected(data);
-      }
-      console.log(result.data);
-    });
+  async function handleChangeModalPhoto(photo: PostImageData | null) {
+    if (photo) {
+      await PhotoServices.getPhotoById(photo.id).then((result) => {
+        if (result.data) {
+          const data = result.data;
+          setPhotoSelected(data.photo);
+          setComments(data.comments);
+        }
+      });
+    } else {
+      setPhotoSelected(null);
+      setComments(null);
+    }
+  }
+  async function PostComments(comment: string, id: string) {
+    if (comment && id) {
+      CommentServices.commentPost(comment, id)
+        .then((result) => {
+          const newComment = comments
+            ? [...comments, result.data]
+            : [result.data];
+          setComments(newComment);
+        })
+        .catch(() => {
+          setError("Não foi possivel. Tente novamente mais tarde!");
+        });
+    }
   }
 
   return (
@@ -72,6 +96,8 @@ export const PhotoProvider = ({ children }: PhotoProviderProps) => {
         error,
         loading,
         handleChangeModalPhoto,
+        PostComments,
+        comments,
       }}
     >
       {children}
