@@ -40,3 +40,6 @@
     transform: initial;
   }
 }
+.main-container {
+  margin-top: 4rem;
+}

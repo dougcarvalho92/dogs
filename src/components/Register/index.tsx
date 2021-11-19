@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
-import { FormEvent } from "react";
+import { FormEvent, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { useUser } from "../../context/UserContext";
 import useForm from "../../hooks/useForm";
 import { ErrorResponse } from "../../objectType";
@@ -49,7 +50,7 @@ const Register = () => {
 
         <Button
           disabled={
-            username && email && password && confirm_password ? true : false
+            !username && !email && !password && !confirm_password ? true : false
           }
         >
           Cadastre-se

@@ -2,8 +2,8 @@ import React from "react";
 
 // import { Container } from './styles';
 
-const Dashboard: React.FC = () => {
+const Loading: React.FC = () => {
   return <div />;
 };
 
-export default Dashboard;
+export default Loading;

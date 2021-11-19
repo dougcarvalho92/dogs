@@ -25,6 +25,8 @@ interface UserContextData {
   error: string | null;
   userLogin: ({ username, password }: UserCredentials) => void;
   userLogout: () => void;
+  handleSetLoading: (value: boolean) => void;
+  handleSetError: (value: string) => void;
 }
 
 const UserContext = createContext<UserContextData>({} as UserContextData);
@@ -45,14 +47,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       setUser(null);
       setSigned(false);
       setError(null);
-      setLoading(false);
+      handleSetLoading(false);
       window.localStorage.removeItem("token");
       navigate("/");
     },
     [navigate]
   );
+
   function userLogin({ username, password }: UserCredentials) {
-    setLoading(true);
+    handleSetLoading(true);
     TokenServices.getToken({
       username,
       password,
@@ -67,17 +70,19 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         }
       })
       .catch((err: AxiosError) => {
-        const error = err.response?.data as ErrorResponse;
-        const message = error.message
-          ? error.message
-          : "Tente novamente mais tarde";
-        console.log(message);
+        if (err.response?.data) {
+          const error = err.response?.data as ErrorResponse;
+          const message = error.message;
+          setError(message);
+        } else {
+          setError("Tente novamente mais tarde!");
+        }
+
         setSigned(false);
         setUser(null);
-        setError(message);
       })
       .finally(() => {
-        setLoading(false);
+        handleSetLoading(false);
       });
   }
 
@@ -91,31 +96,52 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       }
     }
   }
-
+  function handleSetLoading(value: boolean) {
+    setLoading(value);
+  }
+  function handleSetError(value: string) {
+    setError(value);
+  }
   function isUserProps(object: any): object is UserProps {
     return "nome" in object;
   }
 
   useEffect(() => {
     async function autoLogin() {
-      setLoading(true);
+      handleSetLoading(true);
       const token = window.localStorage.getItem("token");
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const validate = await TokenServices.validateToken();
-      if (token && validate.status === 200) {
-        setError(null);
-        await getUser();
-      } else {
-        setError("Acesso Invalido");
+
+      if (token) {
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        try {
+          setError(null);
+          await TokenServices.validateToken();
+          await getUser();
+        } catch (error) {
+          const err = error as AxiosError;
+          const response = err.response?.data as ErrorResponse;
+          if (response) {
+            setError(response.message);
+          } else setError("Tente novamente mais tarde!");
+        }
       }
-      setLoading(false);
+      handleSetLoading(false);
     }
     autoLogin();
   }, []);
 
   return (
     <UserContext.Provider
-      value={{ signed, loading, user, error, userLogin, userLogout }}
+      value={{
+        signed,
+        loading,
+        user,
+        error,
+        userLogin,
+        userLogout,
+        handleSetLoading,
+        handleSetError,
+      }}
     >
       {children}
     </UserContext.Provider>

@@ -1,6 +1,4 @@
 import User from "./pages/User";
-
-import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import { Navigate, useRoutes } from "react-router-dom";
 import Login from "./components/Login";
@@ -8,7 +6,8 @@ import Register from "./components/Register";
 import { useUser } from "./context/UserContext";
 import Feed from "./components/Feed";
 import UserStats from "./components/UserStats";
-import UserPost from "./components/UserPost";
+import UserPost from "./components/UserPhotoPost";
+import Home from "./pages/Home";
 
 const PageNotFound = () => {
   return <h1>Não encontrada</h1>;
@@ -20,7 +19,7 @@ const AppRoutes = () => {
   let routes = useRoutes([
     {
       path: "/",
-      element: <Dashboard />,
+      element: <Home />,
     },
     {
       path: "/auth",

@@ -28,3 +28,30 @@ export interface ErrorResponse {
 export interface ErrorMessage {
   message: string;
 }
+
+export interface UserPostImageProps {
+  preview: string;
+  raw: Blob;
+}
+export interface PostImageProps {
+  nome: string;
+  idade: string;
+  peso: string;
+  img: Blob;
+}
+export interface PostImageData {
+  acessos: string;
+  author: string;
+  date: string;
+  id: number;
+  idade: number;
+  peso: number;
+  src: string;
+  title: string;
+  total_comments: string;
+}
+
+export interface PhotoSelectedProps {
+  comments: [];
+  photo: PostImageData;
+}

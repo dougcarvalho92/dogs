@@ -4,7 +4,7 @@ import "./style.css";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  error: string | null;
+  error?: string | null;
 }
 
 const Input = (props: InputProps) => {
