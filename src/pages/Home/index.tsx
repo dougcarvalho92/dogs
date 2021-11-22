@@ -1,5 +1,4 @@
 import Feed from "../../components/Feed";
-import Head from "../../components/Head";
 
 const Home = () => {
   return (

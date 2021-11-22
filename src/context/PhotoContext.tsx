@@ -19,6 +19,7 @@ interface PhotoContextData {
   loading: boolean;
   handleChangeModalPhoto: (photo: PostImageData | null) => void;
   PostComments: (comment: string, id: string) => void;
+  handleDeletePhoto: (id: string) => void;
 }
 
 const PhotoContext = createContext<PhotoContextData>({} as PhotoContextData);
@@ -40,7 +41,7 @@ export const PhotoProvider = ({ children }: PhotoProviderProps) => {
   useEffect(() => {
     async function getPhotos() {
       setLoading(true);
-      PhotoServices.filterPhotos(10, 1, 0)
+      PhotoServices.filterPhotos(10, 1, "0")
         .then((response: AxiosResponse) => {
           const feedPhotos = response.data as PostImageData[];
           setPhotos(feedPhotos);
@@ -87,7 +88,7 @@ export const PhotoProvider = ({ children }: PhotoProviderProps) => {
         });
     }
   }
-
+  function handleDeletePhoto(id: string) {}
   return (
     <PhotoContext.Provider
       value={{
@@ -98,6 +99,7 @@ export const PhotoProvider = ({ children }: PhotoProviderProps) => {
         handleChangeModalPhoto,
         PostComments,
         comments,
+        handleDeletePhoto,
       }}
     >
       {children}

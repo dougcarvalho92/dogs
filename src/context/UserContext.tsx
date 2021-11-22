@@ -66,6 +66,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
           api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
           localStorage.setItem("token", data.token);
           await getUser();
+
           navigate("/user");
         }
       })
@@ -108,24 +109,24 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   useEffect(() => {
     async function autoLogin() {
-      handleSetLoading(true);
       const token = window.localStorage.getItem("token");
-
       if (token) {
+        setError(null);
+        setLoading(true);
         api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        try {
-          setError(null);
-          await TokenServices.validateToken();
-          await getUser();
-        } catch (error) {
-          const err = error as AxiosError;
-          const response = err.response?.data as ErrorResponse;
-          if (response) {
-            setError(response.message);
-          } else setError("Tente novamente mais tarde!");
-        }
+        await TokenServices.validateToken(token)
+          .then(() => {
+            getUser();
+          })
+          .catch((error: AxiosError) => {
+            api.defaults.headers.common["Authorization"] = ``;
+            console.error(error.stack);
+            window.localStorage.removeItem("token");
+          })
+          .finally(() => {
+            setLoading(false);
+          });
       }
-      handleSetLoading(false);
     }
     autoLogin();
   }, []);

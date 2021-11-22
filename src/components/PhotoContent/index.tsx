@@ -1,19 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
+import Image from "../../helpers/Image";
 import { PostImageData } from "../../objectType";
 import PhotoComments from "../PhotoComments";
+import PhotoDelete from "../PhotoDelete";
 import styles from "./PhotoContent.module.css";
 
 const PhotoContent = (photo: PostImageData) => {
+  const { user } = useUser();
   return (
     <div className={styles.photo}>
       <div className={styles.img}>
-        <img src={photo.src} alt={photo.title} />
+        <Image src={photo.src} alt={photo.title} />
       </div>
       <div className={styles.details}>
         <div>
           <p className={styles.author}>
-            <Link to={`/profile/${photo.author}`}>@{photo.author}</Link>
+            {user ? (
+              <PhotoDelete id={photo.id} />
+            ) : (
+              <Link to={`/profile/${photo.author}`}>@{photo.author}</Link>
+            )}
             <span className={styles.visualizacoes}>{photo.acessos}</span>
           </p>
           <h1 className="title">

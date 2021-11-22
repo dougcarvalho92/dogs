@@ -1,7 +1,8 @@
 import React, { MouseEvent } from "react";
 import { usePhotos } from "../../context/PhotoContext";
 import Error from "../../helpers/Error/Error";
-import Loading from "../Loading";
+import Loading from "../../helpers/Loading";
+
 import PhotoContent from "../PhotoContent";
 
 import styles from "./FeedModal.module.css";

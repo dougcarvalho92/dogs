@@ -8,7 +8,7 @@ const PhotoServices = {
   getPhotos: async () => {
     return await api.post("/api/photo");
   },
-  filterPhotos: async (_total: number, _page: number, _user: number) => {
+  filterPhotos: async (_total: number, _page: number, _user: string) => {
     return await api.get(
       `api/photo?_page=${_page}&_total=${_total}&_user=${_user}`
     );
@@ -16,7 +16,7 @@ const PhotoServices = {
   getPhotoById: async (id: string) => {
     return await api.get<PhotoSelectedProps>(`/api/photo/${id}`);
   },
-  deletePhoto: async (id: number) => {
+  deletePhoto: async (id: string) => {
     return await api.delete(`/api/photo/${id}`);
   },
 };

@@ -7,7 +7,11 @@ export const TokenServices = {
     console.log(data);
     return await api.post("/jwt-auth/v1/token", JSON.stringify(data));
   },
-  validateToken: async () => {
-    return await api.post("/jwt-auth/v1/token/validate");
+  validateToken: async (token: string) => {
+    return await api.post("/jwt-auth/v1/token/validate", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
 };
