@@ -6,12 +6,10 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { useLocation } from "react-router";
 
 import { CommentProps, PostImageData } from "../objectType";
 import { CommentServices } from "../services/CommentServices";
 import PhotoServices from "../services/PhotoServices";
-import { useUser } from "./UserContext";
 
 interface PhotoContextData {
   photos: PostImageData[] | null;
@@ -22,6 +20,7 @@ interface PhotoContextData {
   handleChangeModalPhoto: (photo: PostImageData | null) => void;
   PostComments: (comment: string, id: string) => void;
   handleDeletePhoto: (id: string) => void;
+  handleChangePage: (page: number) => void;
 }
 
 const PhotoContext = createContext<PhotoContextData>({} as PhotoContextData);
@@ -32,37 +31,16 @@ interface PhotoProviderProps {
 }
 
 export const PhotoProvider = ({ children, userId }: PhotoProviderProps) => {
-  const [photos, setPhotos] = useState<PostImageData[] | null>(null);
+  const [photos, setPhotos] = useState<PostImageData[]>([]);
   const [photoSelected, setPhotoSelected] = useState<PostImageData | null>(
     null
   );
-  const [comments, setComments] = useState<CommentProps[] | null>(null);
+  const [comments, setComments] = useState<CommentProps[]>([]);
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    async function getPhotos() {
-      setLoading(true);
-      PhotoServices.filterPhotos(10, 1, userId ? userId : "0")
-        .then((response: AxiosResponse) => {
-          const feedPhotos = response.data as PostImageData[];
-          setPhotos(feedPhotos);
-        })
-        .catch((error: AxiosError) => {
-          if (error.response) {
-            setError(error.response?.statusText);
-          } else {
-            setError("Erro ao buscar imagens");
-          }
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-    getPhotos();
-  }, [userId]);
-
+  const [page, setPage] = useState(1);
+  const [infinite, setInfinite] = useState(true);
   async function handleChangeModalPhoto(photo: PostImageData | null) {
     if (photo) {
       await PhotoServices.getPhotoById(photo.id).then((result) => {
@@ -74,7 +52,7 @@ export const PhotoProvider = ({ children, userId }: PhotoProviderProps) => {
       });
     } else {
       setPhotoSelected(null);
-      setComments(null);
+      setComments([]);
     }
   }
   async function PostComments(comment: string, id: string) {
@@ -92,6 +70,63 @@ export const PhotoProvider = ({ children, userId }: PhotoProviderProps) => {
     }
   }
   function handleDeletePhoto(id: string) {}
+  const handleChangePage = (page: number) => setPage(page);
+
+  useEffect(() => {
+    async function getPhotos() {
+      setLoading(true);
+      await PhotoServices.filterPhotos(page * 3, 1, userId ? userId : "0")
+        .then((response: AxiosResponse) => {
+          const feedPhotos = response.data as PostImageData[];
+          setPhotos((fp) => {
+            if (
+              feedPhotos.length === fp.length ||
+              feedPhotos.length % 3 !== 0
+            ) {
+              setInfinite(false);
+            }
+            return feedPhotos;
+          });
+        })
+        .catch((error: AxiosError) => {
+          if (error.response) {
+            setError(error.response?.statusText);
+          } else {
+            setError("Erro ao buscar imagens");
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+
+    if (infinite) {
+      getPhotos();
+    }
+  }, [page, userId, infinite]);
+
+  useEffect(() => {
+    let wait = false;
+    function InfinityScroll() {
+      const scrollY = window.scrollY;
+      const height = document.body.offsetHeight - window.innerHeight;
+
+      if (scrollY > height && !wait) {
+        setPage((page) => page + 1);
+        wait = true;
+        setTimeout(() => {
+          wait = false;
+        }, 1000);
+      }
+    }
+    window.addEventListener("scroll", InfinityScroll);
+    window.addEventListener("wheel", InfinityScroll);
+    return () => {
+      window.removeEventListener("scroll", InfinityScroll);
+      window.removeEventListener("wheel", InfinityScroll);
+    };
+  }, []);
+
   return (
     <PhotoContext.Provider
       value={{
@@ -103,6 +138,7 @@ export const PhotoProvider = ({ children, userId }: PhotoProviderProps) => {
         PostComments,
         comments,
         handleDeletePhoto,
+        handleChangePage,
       }}
     >
       {children}
