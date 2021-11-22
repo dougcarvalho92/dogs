@@ -14,7 +14,7 @@ const PageNotFound = () => {
 };
 
 const AppRoutes = () => {
-  const { signed } = useUser();
+  const { signed, user } = useUser();
 
   let routes = useRoutes([
     {
@@ -41,7 +41,7 @@ const AppRoutes = () => {
       children: [
         {
           path: "",
-          element: <Feed />,
+          element: <Feed userId={user ? user.id : "0"} />,
         },
         {
           path: "stats",

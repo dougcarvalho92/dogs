@@ -15,14 +15,14 @@ const FeedModal = () => {
       handleChangeModalPhoto(null);
     }
   }
-
-  return (
+  if (loading) return <Loading />;
+  return photoSelected ? (
     <div className={styles.modal} onClick={handleClickOutSide}>
       {error && <Error message={error} />}
       {loading && <Loading />}
       {photoSelected && <PhotoContent {...photoSelected} />}
     </div>
-  );
+  ) : null;
 };
 
 export default FeedModal;

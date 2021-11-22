@@ -4,12 +4,13 @@ import Error from "../../helpers/Error/Error";
 import { PostImageData } from "../../objectType";
 import styles from "./FeedPhotos.module.css";
 import { usePhotos } from "../../context/PhotoContext";
+import Loading from "../../helpers/Loading";
 
 const FeedPhotos = () => {
-  const { photos, error } = usePhotos();
+  const { photos, error, loading } = usePhotos();
 
   if (error) return <Error message={error} />;
-
+  if (loading) return <Loading />;
   return (
     <ul className={styles.feed}>
       {photos &&

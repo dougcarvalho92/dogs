@@ -6,10 +6,12 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { useLocation } from "react-router";
 
 import { CommentProps, PostImageData } from "../objectType";
 import { CommentServices } from "../services/CommentServices";
 import PhotoServices from "../services/PhotoServices";
+import { useUser } from "./UserContext";
 
 interface PhotoContextData {
   photos: PostImageData[] | null;
@@ -25,10 +27,11 @@ interface PhotoContextData {
 const PhotoContext = createContext<PhotoContextData>({} as PhotoContextData);
 
 interface PhotoProviderProps {
+  userId: string | null;
   children: ReactNode;
 }
 
-export const PhotoProvider = ({ children }: PhotoProviderProps) => {
+export const PhotoProvider = ({ children, userId }: PhotoProviderProps) => {
   const [photos, setPhotos] = useState<PostImageData[] | null>(null);
   const [photoSelected, setPhotoSelected] = useState<PostImageData | null>(
     null
@@ -41,7 +44,7 @@ export const PhotoProvider = ({ children }: PhotoProviderProps) => {
   useEffect(() => {
     async function getPhotos() {
       setLoading(true);
-      PhotoServices.filterPhotos(10, 1, "0")
+      PhotoServices.filterPhotos(10, 1, userId ? userId : "0")
         .then((response: AxiosResponse) => {
           const feedPhotos = response.data as PostImageData[];
           setPhotos(feedPhotos);
@@ -58,7 +61,7 @@ export const PhotoProvider = ({ children }: PhotoProviderProps) => {
         });
     }
     getPhotos();
-  }, []);
+  }, [userId]);
 
   async function handleChangeModalPhoto(photo: PostImageData | null) {
     if (photo) {

@@ -1,17 +1,20 @@
 import React from "react";
-import { usePhotos } from "../../context/PhotoContext";
+import { PhotoProvider } from "../../context/PhotoContext";
 
 import FeedModal from "../FeedModal";
 import FeedPhotos from "../FeedPhotos";
 
-// import { Container } from './styles';
+interface FeedProps {
+  userId: string | null;
+}
 
-const Feed = () => {
-  const { photoSelected } = usePhotos();
+const Feed = ({ userId }: FeedProps) => {
   return (
     <div>
-      {photoSelected && <FeedModal />}
-      <FeedPhotos />
+      <PhotoProvider userId={userId}>
+        <FeedModal />
+        <FeedPhotos />
+      </PhotoProvider>
     </div>
   );
 };
