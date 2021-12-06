@@ -20,7 +20,7 @@ const FeedModal = () => {
     <div className={styles.modal} onClick={handleClickOutSide}>
       {error && <Error message={error} />}
       {loading && <Loading />}
-      {photoSelected && <PhotoContent {...photoSelected} />}
+      {photoSelected && <PhotoContent photo={photoSelected} />}
     </div>
   ) : null;
 };

@@ -1,16 +1,19 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 import Image from "../../helpers/Image";
-import { PostImageData } from "../../objectType";
+import { CommentProps, PostImageData } from "../../objectType";
 import PhotoComments from "../PhotoComments";
 import PhotoDelete from "../PhotoDelete";
 import styles from "./PhotoContent.module.css";
-
-const PhotoContent = (photo: PostImageData) => {
+interface PhotoContentProps {
+  photo: PostImageData;
+  single?: boolean;
+  comments?: CommentProps[];
+}
+const PhotoContent = ({ photo, single, comments }: PhotoContentProps) => {
   const { user } = useUser();
   return (
-    <div className={styles.photo}>
+    <div className={`${styles.photo} ${single ? styles.single : ""}`}>
       <div className={styles.img}>
         <Image src={photo.src} alt={photo.title} />
       </div>
@@ -35,7 +38,7 @@ const PhotoContent = (photo: PostImageData) => {
           </ul>
         </div>
       </div>
-      <PhotoComments />
+      <PhotoComments comments={comments ? comments : []} />
     </div>
   );
 };

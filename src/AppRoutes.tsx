@@ -8,6 +8,7 @@ import Feed from "./components/Feed";
 import UserStats from "./components/UserStats";
 import UserPost from "./components/UserPhotoPost";
 import Home from "./pages/Home";
+import Photo from "./components/Photo";
 
 const PageNotFound = () => {
   return <h1>Não encontrada</h1>;
@@ -17,6 +18,10 @@ const AppRoutes = () => {
   const { signed, user } = useUser();
 
   let routes = useRoutes([
+    {
+      path: "/",
+      element: <Home />,
+    },
     {
       path: "/",
       element: <Home />,
@@ -50,6 +55,19 @@ const AppRoutes = () => {
         {
           path: "post",
           element: <UserPost />,
+        },
+      ],
+    },
+    {
+      path: "/photo",
+      children: [
+        {
+          path: "",
+          element: <PageNotFound />,
+        },
+        {
+          path: ":id",
+          element: <Photo />,
         },
       ],
     },

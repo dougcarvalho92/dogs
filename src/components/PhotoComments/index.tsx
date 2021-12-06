@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { usePhotos } from "../../context/PhotoContext";
 import { useUser } from "../../context/UserContext";
+import { CommentProps } from "../../objectType";
 import PhotoCommentsForm from "../PhotoCommentsForm";
 import styles from "./PhotoComments.module.css";
-
-const PhotoComments = () => {
+interface PhotoCommentsProps {
+  comments: CommentProps[];
+}
+const PhotoComments = ({ comments }: PhotoCommentsProps) => {
   const { signed } = useUser();
-  const { comments } = usePhotos();
+  const { commentsSelected } = usePhotos();
+  const [showComments, setShowComments] = useState<CommentProps[]>();
+
+  useEffect(() => {
+    if (commentsSelected) {
+      setShowComments(commentsSelected);
+    } else if (comments) {
+      setShowComments(comments);
+    }
+  }, [comments, commentsSelected]);
+
   return (
     <>
       <ul className={styles.comments}>
-        {comments &&
-          comments.map((comment) => (
+        {showComments &&
+          showComments.map((comment) => (
             <li key={comment.comment_ID}>
               <b>{comment.comment_author}: </b>
               <span>{comment.comment_content}</span>

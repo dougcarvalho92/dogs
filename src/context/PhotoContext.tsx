@@ -14,13 +14,14 @@ import PhotoServices from "../services/PhotoServices";
 interface PhotoContextData {
   photos: PostImageData[] | null;
   photoSelected: PostImageData | null;
-  comments: CommentProps[] | null;
+  commentsSelected: CommentProps[] | null;
   error: string;
   loading: boolean;
   handleChangeModalPhoto: (photo: PostImageData | null) => void;
   PostComments: (comment: string, id: string) => void;
   handleDeletePhoto: (id: string) => void;
   handleChangePage: (page: number) => void;
+  handleChangeComments: (comments: CommentProps[]) => void;
 }
 
 const PhotoContext = createContext<PhotoContextData>({} as PhotoContextData);
@@ -35,7 +36,7 @@ export const PhotoProvider = ({ children, userId }: PhotoProviderProps) => {
   const [photoSelected, setPhotoSelected] = useState<PostImageData | null>(
     null
   );
-  const [comments, setComments] = useState<CommentProps[]>([]);
+  const [commentsSelected, setCommentsSelected] = useState<CommentProps[]>([]);
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -47,22 +48,25 @@ export const PhotoProvider = ({ children, userId }: PhotoProviderProps) => {
         if (result.data) {
           const data = result.data;
           setPhotoSelected(data.photo);
-          setComments(data.comments);
+          handleChangeComments(data.comments);
         }
       });
     } else {
       setPhotoSelected(null);
-      setComments([]);
+      handleChangeComments([]);
     }
+  }
+  function handleChangeComments(comments: CommentProps[]) {
+    setCommentsSelected(comments);
   }
   async function PostComments(comment: string, id: string) {
     if (comment && id) {
       CommentServices.commentPost(comment, id)
         .then((result) => {
-          const newComment = comments
-            ? [...comments, result.data]
+          const newComment = commentsSelected
+            ? [...commentsSelected, result.data]
             : [result.data];
-          setComments(newComment);
+          handleChangeComments(newComment);
         })
         .catch(() => {
           setError("Não foi possivel. Tente novamente mais tarde!");
@@ -136,9 +140,10 @@ export const PhotoProvider = ({ children, userId }: PhotoProviderProps) => {
         loading,
         handleChangeModalPhoto,
         PostComments,
-        comments,
+        commentsSelected,
         handleDeletePhoto,
         handleChangePage,
+        handleChangeComments,
       }}
     >
       {children}
