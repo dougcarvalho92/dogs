@@ -38,7 +38,7 @@ const PhotoContent = ({ photo, single, comments }: PhotoContentProps) => {
           </ul>
         </div>
       </div>
-      <PhotoComments comments={comments ? comments : []} />
+      <PhotoComments single={single} comments={comments ? comments : []} />
     </div>
   );
 };

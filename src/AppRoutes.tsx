@@ -9,10 +9,9 @@ import UserStats from "./components/UserStats";
 import UserPost from "./components/UserPhotoPost";
 import Home from "./pages/Home";
 import Photo from "./components/Photo";
-
-const PageNotFound = () => {
-  return <h1>Não encontrada</h1>;
-};
+import SinglePhoto from "./pages/SinglePhoto";
+import PageNotFound from "./components/PageNotFound";
+import UserProfile from "./components/UserProfile";
 
 const AppRoutes = () => {
   const { signed, user } = useUser();
@@ -59,6 +58,19 @@ const AppRoutes = () => {
       ],
     },
     {
+      path: "/profile",
+      children: [
+        {
+          path: "",
+          element: <PageNotFound />,
+        },
+        {
+          path: ":id",
+          element: <UserProfile />,
+        },
+      ],
+    },
+    {
       path: "/photo",
       children: [
         {
@@ -67,7 +79,7 @@ const AppRoutes = () => {
         },
         {
           path: ":id",
-          element: <Photo />,
+          element: <SinglePhoto />,
         },
       ],
     },

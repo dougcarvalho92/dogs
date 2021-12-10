@@ -27,7 +27,9 @@
   border-radius: 0.2rem;
   z-index: -1;
 }
-
+.title-capitalized {
+  text-transform: capitalize;
+}
 .animeLeft {
   opacity: 0;
   transform: translateX(-20px);

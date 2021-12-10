@@ -17,7 +17,7 @@ interface PhotoContextData {
   commentsSelected: CommentProps[] | null;
   error: string;
   loading: boolean;
-  handleChangeModalPhoto: (photo: PostImageData | null) => void;
+  handleChangeModalPhoto: (id: string | null) => void;
   PostComments: (comment: string, id: string) => void;
   handleDeletePhoto: (id: string) => void;
   handleChangePage: (page: number) => void;
@@ -42,9 +42,9 @@ export const PhotoProvider = ({ children, userId }: PhotoProviderProps) => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [infinite, setInfinite] = useState(true);
-  async function handleChangeModalPhoto(photo: PostImageData | null) {
-    if (photo) {
-      await PhotoServices.getPhotoById(photo.id).then((result) => {
+  async function handleChangeModalPhoto(id: string | null) {
+    if (id) {
+      await PhotoServices.getPhotoById(id).then((result) => {
         if (result.data) {
           const data = result.data;
           setPhotoSelected(data.photo);

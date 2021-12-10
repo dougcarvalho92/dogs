@@ -11,7 +11,7 @@ const FeedPhotosItem = (photo: PostImageData) => {
     <li
       className={styles.photo}
       onClick={() => {
-        handleChangeModalPhoto(photo);
+        handleChangeModalPhoto(photo.id);
       }}
     >
       <Image src={photo.src} alt={photo.title} />

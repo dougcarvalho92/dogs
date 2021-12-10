@@ -1,37 +1,33 @@
 import React, { useState } from "react";
-import { useParams } from "react-router";
+import { usePhotos } from "../../context/PhotoContext";
 import Error from "../../helpers/Error/Error";
 import Loading from "../../helpers/Loading";
-import { PhotoSelectedProps } from "../../objectType";
 import PhotoServices from "../../services/PhotoServices";
 import PhotoContent from "../PhotoContent";
 
-const Photo = () => {
-  const { id } = useParams();
-  const [photoData, setPhotoData] = useState<PhotoSelectedProps>();
+interface SinglePhotoProps {
+  id: string;
+}
+
+const Photo = ({ id }: SinglePhotoProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { handleChangeModalPhoto, photoSelected, commentsSelected } =
+    usePhotos();
 
   React.useEffect(() => {
-    async function getPhotoData() {
-      if (id) {
-        await PhotoServices.getPhotoById(id).then((result) => {
-          setPhotoData(result.data);
-        });
-      }
-    }
-    getPhotoData();
-  }, [id]);
+    handleChangeModalPhoto(id);
+  }, []);
 
   if (error) return <Error message={error} />;
   if (loading) return <Loading />;
-  if (photoData)
+  if (photoSelected)
     return (
       <section className="container main-container">
         <PhotoContent
           single={true}
-          photo={photoData.photo}
-          comments={photoData.comments}
+          photo={photoSelected}
+          comments={commentsSelected ? commentsSelected : []}
         />
       </section>
     );

@@ -4,8 +4,10 @@ import { ReactComponent as Enviar } from "../../assets/images/enviar.svg";
 import Error from "../../helpers/Error/Error";
 import { usePhotos } from "../../context/PhotoContext";
 import styles from "./PhotoCommentsForm.module.css";
-
-const PhotoCommentsForm = () => {
+interface PhotoCommentsFormProps {
+  single?: boolean;
+}
+const PhotoCommentsForm = ({ single }: PhotoCommentsFormProps) => {
   const [comment, setComment] = React.useState("");
   const { PostComments, error, photoSelected } = usePhotos();
 
@@ -18,7 +20,10 @@ const PhotoCommentsForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form
+      onSubmit={handleSubmit}
+      className={`${styles.form} ${single && styles.single}`}
+    >
       <textarea
         id="comment"
         name="comment"

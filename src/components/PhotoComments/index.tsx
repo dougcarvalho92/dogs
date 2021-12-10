@@ -6,8 +6,9 @@ import PhotoCommentsForm from "../PhotoCommentsForm";
 import styles from "./PhotoComments.module.css";
 interface PhotoCommentsProps {
   comments: CommentProps[];
+  single?: boolean;
 }
-const PhotoComments = ({ comments }: PhotoCommentsProps) => {
+const PhotoComments = ({ comments, single }: PhotoCommentsProps) => {
   const { signed } = useUser();
   const { commentsSelected } = usePhotos();
   const [showComments, setShowComments] = useState<CommentProps[]>();
@@ -22,7 +23,7 @@ const PhotoComments = ({ comments }: PhotoCommentsProps) => {
 
   return (
     <>
-      <ul className={styles.comments}>
+      <ul className={`${styles.comments} ${single && styles.single}`}>
         {showComments &&
           showComments.map((comment) => (
             <li key={comment.comment_ID}>
@@ -31,7 +32,7 @@ const PhotoComments = ({ comments }: PhotoCommentsProps) => {
             </li>
           ))}
       </ul>
-      {signed && <PhotoCommentsForm />}
+      {signed && <PhotoCommentsForm single={single} />}
     </>
   );
 };
