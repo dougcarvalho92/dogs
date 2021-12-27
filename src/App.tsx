@@ -12,7 +12,7 @@ function App() {
       <UserProvider>
         <Header />
         <AppRoutes />
-        {/* <Footer /> */}
+        <Footer />
       </UserProvider>
     </BrowserRouter>
   );

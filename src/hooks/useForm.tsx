@@ -42,10 +42,11 @@ const useForm = (type: string | false) => {
 
   function validate(value: string) {
     const tp = types.find((tp) => tp.type === type);
-    if (type === false) return true;
     if (value.length === 0) {
       setError("Preencha um valor");
       return false;
+    } else if (type === false) {
+      return true;
     } else if (tp && !tp.regex.test(value)) {
       setError(tp.message);
     } else {

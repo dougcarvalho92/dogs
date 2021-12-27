@@ -11,20 +11,19 @@ export const UserServices = {
   getUser: async () => {
     return await api.get<UserProps | ErrorResponse>("/api/user");
   },
-  lostPassword: async (id: number) => {
-    return await api.post(`/api/password/lost`, {
-      data: {
-        login: "",
-        url: "",
-      },
-    });
+  lostPassword: async (id: string) => {
+    const data = {
+      login: id,
+      url: window.location.href.replace("lost", "reset"),
+    };
+    return await api.post<string>(`/api/password/lost`, JSON.stringify(data));
   },
-  resetPassword: async (id: number) => {
+  resetPassword: async (login: string, key: string, password: string) => {
     return await api.post(`/api/password/reset`, {
       data: {
-        login: "",
-        password: "",
-        key: "",
+        login,
+        password,
+        key,
       },
     });
   },

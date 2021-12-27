@@ -8,7 +8,7 @@ import { UserServices } from "../../services/UserServices";
 import Button from "../Button";
 import Input from "../Input";
 
-const Register = () => {
+const LoginCreate = () => {
   const username = useForm("username");
   const email = useForm("email");
   const password = useForm("password");
@@ -60,4 +60,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default LoginCreate;
