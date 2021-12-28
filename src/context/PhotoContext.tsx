@@ -73,7 +73,9 @@ export const PhotoProvider = ({ children, userId }: PhotoProviderProps) => {
         });
     }
   }
-  function handleDeletePhoto(id: string) {}
+  function handleDeletePhoto(id: string) {
+    PhotoServices.deletePhoto(id);
+  }
   const handleChangePage = (page: number) => setPage(page);
 
   useEffect(() => {

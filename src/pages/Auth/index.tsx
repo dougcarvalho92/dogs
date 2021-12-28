@@ -1,11 +1,11 @@
 import { Outlet } from "react-router";
 
-import "./style.css";
+import styles from "./Auth.module.css";
 
 const Auth = () => {
   return (
-    <section className="login">
-      <div className="forms">
+    <section className={styles.login}>
+      <div className={styles.forms}>
         <Outlet />
       </div>
     </section>

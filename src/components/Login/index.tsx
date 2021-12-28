@@ -8,7 +8,7 @@ import Button from "../Button";
 import Head from "../Head";
 import Input from "../Input";
 
-import "./style.css";
+import styles from "./Login.module.css";
 
 const Login = () => {
   const username = useForm(false);
@@ -30,19 +30,19 @@ const Login = () => {
     <section className="animeLeft">
       <Head title="Login" />
       <h1 className="title">Login</h1>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <Input label="Usuário" name="usuario" {...username} />
         <Input label="Senha" type="password" name="password" {...password} />
         <Button disabled={loading}>
           {loading ? "Carregando..." : "Entrar"}
         </Button>
-        {error && <Error message={error} />}
+        {error && <Error message={error && "Dados incorretos"} />}
       </form>
-      <Link className="lost-password" to="/auth/lost">
+      <Link className={styles.lostPassword} to="/auth/lost">
         Perdeu a senha?
       </Link>
-      <div className="register">
-        <h2 className="subtitle">Cadastre-se</h2>
+      <div className={styles.register}>
+        <h2 className={styles.subtitle}>Cadastre-se</h2>
         <p>Ainda não possui conta? Cadastre-se no site</p>
         <Link to="/auth/register">
           <Button>Cadastro</Button>

@@ -1,9 +1,9 @@
 import { ReactComponent as Dogs } from "../../assets/images/dogs-footer.svg";
+import styles from "./Footer.module.css";
 
-import "./style.css";
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className={styles.footer}>
       <Dogs />
       <p>Dogs. Alguns direitos reservados.</p>
     </footer>

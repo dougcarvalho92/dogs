@@ -73,3 +73,8 @@ export interface PhotoSelectedProps {
   comments: CommentProps[];
   photo: PostImageData;
 }
+export interface StatsProps {
+  id: string;
+  title: string;
+  acessos: string;
+}

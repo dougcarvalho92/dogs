@@ -1,6 +1,6 @@
 import React, { InputHTMLAttributes } from "react";
 
-import "./style.css";
+import styles from "./Input.module.css";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -9,12 +9,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const Input = (props: InputProps) => {
   return (
-    <div className="wrapper">
-      <label htmlFor={props.name} className="label">
+    <div className={styles.wrapper}>
+      <label htmlFor={props.name} className={styles.label}>
         {props.label}
       </label>
-      <input id={props.name} {...props} className="input" />
-      {props.error && <p className="error">{props.error}</p>}
+      <input id={props.name} {...props} className={styles.input} />
+      {props.error && <p className={styles.error}>{props.error}</p>}
     </div>
   );
 };

@@ -2,14 +2,14 @@
   margin-bottom: 2rem;
 }
 
-.lost-password {
+.lostPassword {
   display: inline-block;
   color: #666;
   padding: 0.5rem 0;
   line-height: 1;
 }
 
-.lost-password::after {
+.lostPassword::after {
   content: "";
   height: 2px;
   width: 100%;
