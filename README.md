@@ -1,5 +1,5 @@
 <div align="center" id="top"> 
-  <img src="./dogs/public/dogs.png" alt="Dogs" />
+  <img src="./public/dogs.png" alt="Dogs" />
 </div>
 
 <h1 align="center">Dogs</h1>
